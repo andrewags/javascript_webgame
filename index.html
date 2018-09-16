@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Thermal Energy Box</title>
+    <style>* { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }</style>
+    <h>Options</h>
+    
+    <input id="SpeedUP" type="button" value="Raise Energy" onclick="doFunction();" />
+    <input id="SpeedDOWN" type="button" value="Lower Energy" onclick="doFunction();" />
+    <form>
+        Interval:<br>
+        <input id="IntervalValue" type="number" name="interval" value="1";><br>
+        Box width:<br>
+        <input type="number" name="interval" value="1";><br>
+        Box length:<br>
+        <input type="number" name="interval" value="1";><br>
+        <input id="UPDATE" type="submit" value="Update / reset";>
+    </form>
+    
+    
+    
+</head>
+
+<body>
+
+<canvas id="myCanvas" width="600" height="600"></canvas>
+
+<script>
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    var ballRadius = 10;
+    var x = canvas.width/2;
+    var y = canvas.height-30;
+    var speed = 1;
+    var interval = 1;
+    document.getElementById("IntervalValue").value = interval;
+    var dx = Math.random() * speed;
+    var dy = Math.random() * speed;
+    
+
+    function drawBall() {
+        ctx.beginPath();
+        ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+        ctx.fillStyle = "#000000";
+        ctx.fill();
+        ctx.closePath();
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBall();
+
+        if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+            dx = -dx;
+        }
+        if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+            dy = -dy;
+        }
+
+        x += dx * speed;
+        y += dy * speed;
+        
+        if (speed < 0 ) {
+            speed = 0
+            alert("Thats not allowed!")
+        }
+        
+  
+    }
+
+    setInterval(draw, 0.01);
+
+    document.getElementById("SpeedUP").onclick = function () { 
+        speed = speed + interval
+
+        console.clear();
+        console.log("X Speed: " + dx);
+        console.log("Y Speed: " + dy);
+        console.log("Interval: " + interval);
+        console.log("Speed: " + speed);
+        interval = document.getElementById("IntervalValue").value = interval;
+        interval = document.getElementById("IntervalValue").value = interval;
+    };
+     document.getElementById("SpeedDOWN").onclick = function () { 
+        if (speed > 0) {
+            speed = speed - interval
+        }
+        else {
+            alert("Energy is at 0!")
+        }
+        console.clear();
+        console.log("X Speed: " + dx);
+        console.log("Y Speed: " + dy);
+        console.log("Interval: " + interval);
+        console.log("Speed: " + speed);
+         interval = document.getElementById("IntervalValue").value = interval;interval = document.getElementById("IntervalValue").value = interval;
+        
+    };
+    document.getElementById("UPDATE").onclick = function() {
+        console.clear();
+        console.log("Updated");
+        console.log("X Speed: " + dx);
+        console.log("Y Speed: " + dy);
+        console.log("Interval: " + interval);
+        console.log("Speed: " + speed);
+    };
+    
+    
+
+</script>
+</script>
+
+</body>
+</html>
