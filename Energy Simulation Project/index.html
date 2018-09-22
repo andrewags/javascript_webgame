@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    hint: ctrl+shift+i <br>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8" />
+    <title>Thermal Energy Box</title>
+    
+    <style>* { padding: 0; margin: 0; } canvas { background: #eee; display: block; margin: 0 auto; }</style>
+    
+    <body>
+    <table class="info_box">
+        <h> 
+            <htitle>
+                <p1>Status:</p1>
+                    <p id="status_text">unknown</p>
+                <p1>Energy:</p1>
+                    <p id="speed_text">0</p>
+                <p1>IsTouchingWall:</p1>
+                    <p id="IsTouchingWall">unknown</p>
+                <p1>Ammount of wall touches:</p1>
+                    <p id="walltouchcount_text">unknown</p>
+            </htitle>
+        </h>
+    </table>
+    <input id="SpeedUP" type="button" value="Raise Energy" onclick="doFunction();" />
+    <input id="SpeedDOWN" type="button" value="Lower Energy" onclick="doFunction();" />
+    <input id="Reset" type="button" value="Reset" onclick="doFunction();" />
+    
+    <form id="form" onsubmit="return false;">
+        Interval:<br>
+        <input id="IntervalValue" type="number" name="interval" value="1";><br>
+        Box width:<br>
+        <input type="number" name="interval" value="1";><br>
+        Box length:<br>
+        <input type="number" name="interval" value="1";><br>
+        <input id="UPDATE" type="submit" value="Update / reset" onclick="Update();";>
+    </form>
+    
+    
+    </body>
+</head>
+
+<body>
+
+<canvas id="myCanvas" width="400" height="400"></canvas>
+
+<script>
+    // writen by andrew :D
+    var canvas = document.getElementById("myCanvas");
+    
+    var ctx = canvas.getContext("2d");
+    var ballRadius = 10;
+    var x = canvas.width/2;
+    var y = canvas.height-30;
+    var speed = 1;
+    var interval = 1;
+    var walltouchcount = 0;
+    document.getElementById("IntervalValue").value = interval;
+    var dx = Math.random() * speed;
+    var dy = Math.random() * speed;
+    
+    //constants
+    const _speed = 1   
+    
+
+    function drawBall() {
+        ctx.beginPath();
+        ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+        ctx.fillStyle = "#000000";
+        ctx.fill();
+        ctx.closePath();
+        
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBall();
+
+        if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+            dx = -dx;
+            document.getElementById("IsTouchingWall").innerHTML = "true";
+            walltouchcount = walltouchcount + 1
+            document.getElementById("walltouchcount_text").innerHTML = walltouchcount;
+            
+        }
+        if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+            dy = -dy;
+            document.getElementById("IsTouchingWall").innerHTML = "true";
+            walltouchcount = walltouchcount + 1
+            document.getElementById("walltouchcount_text").innerHTML = walltouchcount;
+        }
+        else {document.getElementById("IsTouchingWall").innerHTML = "wall has been touched";}
+        
+        
+        x += dx * speed;
+        y += dy * speed;
+        
+        if (speed == 1 || speed == 0) {
+            document.getElementById("speed_text").innerHTML = speed + " Joule";
+            
+        } 
+        if (speed > 1) {
+            document.getElementById("speed_text").innerHTML = speed + " Joules";
+        } 
+        if (speed < 0 ) {
+            speed = 0
+            alert("uh.. Thats not allowed!")
+        }
+        
+        if (speed != 0) {
+            document.getElementById("status_text").innerHTML = "moving";
+        } else {document.getElementById("status_text").innerHTML = "not moving";}
+  
+    }
+    
+
+
+    setInterval(draw, 0.01); // the higher this is the faster it redraws the circle
+
+//in document function controlls
+    document.getElementById("SpeedUP").onclick = function () { 
+        speed = speed + interval
+
+        console.clear();
+        console.log("X Speed: " + dx);
+        console.log("Y Speed: " + dy);
+        console.log("Interval: " + interval);
+        console.log("Speed: " + speed);
+        interval = document.getElementById("IntervalValue").value = interval;
+        interval = document.getElementById("IntervalValue").value = interval;
+    };
+    document.getElementById("SpeedDOWN").onclick = function () { 
+        if (speed > 0) {
+            speed = speed - interval
+        }
+        else {
+            alert("Energy is at 0!")
+        }
+        console.clear();
+        console.log("X Speed: " + dx);
+        console.log("Y Speed: " + dy);
+        console.log("Interval: " + interval);
+        console.log("Speed: " + speed);
+         interval = document.getElementById("IntervalValue").value = interval;interval = document.getElementById("IntervalValue").value = interval;
+        
+    };
+    document.getElementById("UPDATE").onclick = function() {
+        console.clear();
+        console.log("Updated");
+        console.log("X Speed: " + dx);
+        console.log("Y Speed: " + dy);
+        console.log("Interval: " + interval);
+        console.log("Speed: " + speed);
+    };
+    document.getElementById("Reset").onclick = function() {
+        console.clear();
+        console.log("Resetting..");
+        console.clear();
+        speed = _speed;
+        walltouchcount = 0
+        document.getElementById("walltouchcount_text").innerHTML = walltouchcount;
+        console.log("Reset successfull!")
+    };
+    
+    
+
+</script>
+</body>
+</html>
